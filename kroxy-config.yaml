@@ -1,0 +1,20 @@
+management:
+  endpoints:
+    prometheus: {}
+
+virtualClusters:
+  - name: proxy-poc
+    targetCluster:
+      # Replace with the bootstrap address of the upstream Redpanda Cloud cluster.
+      bootstrapServers: <upstream-bootstrap-host>:9092
+      tls: {}
+    gateways:
+      - name: mygateway
+        portIdentifiesNode:
+          bootstrapAddress: 0.0.0.0:9192
+          # The hostname/IP clients will see in the rewritten metadata response.
+          # For local testing, use 127.0.0.1; for a remote deployment, use a
+          # hostname that resolves to the proxy's static IP.
+          advertisedBrokerAddressPattern: 127.0.0.1
+    logNetwork: false
+    logFrames: false

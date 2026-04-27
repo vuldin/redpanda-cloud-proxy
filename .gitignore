@@ -1,0 +1,14 @@
+# local secrets — never commit
+.env
+**/.env
+
+# Let's Encrypt cert material if anyone runs the GCP path locally
+gcp/certs/
+**/*.pem
+**/*.key
+**/*.crt
+
+# OS / editor noise
+.DS_Store
+*.swp
+*~

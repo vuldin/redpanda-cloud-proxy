@@ -1,0 +1,22 @@
+management:
+  endpoints:
+    prometheus: {}
+
+virtualClusters:
+  - name: proxy-poc
+    targetCluster:
+      # Replace with the bootstrap address of the upstream Redpanda Cloud cluster.
+      bootstrapServers: <upstream-bootstrap-host>:9092
+      tls: {}
+    gateways:
+      - name: mygateway
+        portIdentifiesNode:
+          bootstrapAddress: 0.0.0.0:9192
+          # The public hostname clients will use. Must match the LE cert SAN.
+          advertisedBrokerAddressPattern: <your-proxy-hostname>
+        tls:
+          key:
+            privateKeyFile: /etc/kroxy/certs/privkey.pem
+            certificateFile: /etc/kroxy/certs/fullchain.pem
+    logNetwork: false
+    logFrames: false
