@@ -1,0 +1,15 @@
+services:
+  kroxylicious:
+    image: quay.io/kroxylicious/kroxylicious:0.15.0
+    container_name: kroxy
+    ports:
+      - "9192:9192"
+      - "9193:9193"
+      - "9194:9194"
+      - "9195:9195"
+      - "9190:9190"
+    volumes:
+      - ./kroxy-config.yaml:/opt/kroxylicious/config/config.yaml:ro
+      - ./certs:/etc/kroxy/certs:ro
+    command: ["-c", "/opt/kroxylicious/config/config.yaml"]
+    restart: unless-stopped

@@ -23,11 +23,13 @@ so clients only ever see addresses owned by the proxy.
 ├── docker-compose.yml    runs Kroxylicious 0.15.0 in Docker
 ├── kroxy-config.yaml     virtualCluster + portIdentifiesNode (downstream plaintext)
 ├── test.sh               rpk metadata + produce/consume against the local proxy
-└── gcp/                  reference deployment to GCE with TLS + Let's Encrypt
+├── gcp/                  reference deployment to GCE with TLS + Let's Encrypt
+└── aws/                  reference deployment to EC2 with TLS + Let's Encrypt + SSM
 ```
 
-The root files run a plaintext proxy on `localhost`. The `gcp/` folder
-extends that to a publicly reachable proxy on a static IP with a real LE cert.
+The root files run a plaintext proxy on `localhost`. The `gcp/` and `aws/`
+folders extend that to a publicly reachable proxy on a static IP with a real
+LE cert.
 
 ## Local quickstart (plaintext)
 
@@ -48,12 +50,13 @@ proof the rewrite is working.
 
 ## Production-shaped deployment (TLS, public hostname)
 
-See [gcp/README.md](gcp/README.md) for a step-by-step that:
+Two cloud-specific reference deployments are included. Both follow the same
+pattern (static IP → DNS → Debian VM → Docker → LE cert → Kroxylicious with
+downstream TLS); pick the one that matches where you're deploying.
 
-- Reserves a static external IP in GCP
-- Creates a small Compute Engine VM with Docker
-- Issues a Let's Encrypt cert via certbot
-- Runs Kroxylicious with downstream TLS
+- [gcp/README.md](gcp/README.md) — GCE, static external IP, gcloud CLI
+- [aws/README.md](aws/README.md) — EC2 + EIP, SSM Session Manager (no
+  port 22), aws CLI
 
 ## How TLS / SASL flow through the proxy
 
